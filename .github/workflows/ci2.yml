@@ -14,8 +14,16 @@ jobs:
         with:
           path: ${{ github.workspace }}/$REPO_NAME # Specify the target directory for checkout
 
+      - name: Install Dependencies
+        run: npm ci # Adjust this based on your package manager (npm, yarn, etc.)
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
+        with:
+          record: false
+          publish-summary: true
+          component: false
+        working-directory: ${{ github.workspace }}/$REPO_NAME
 
       - name: Submit results to Xray
         env:
