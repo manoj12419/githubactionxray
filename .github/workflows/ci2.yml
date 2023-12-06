@@ -20,8 +20,10 @@ jobs:
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
         run: |
-          FILE_PATH="./results/junit/results.xml"
-          echo "MN: File Path: $FILE_PATH"
+          PROJECT_PATH=$(pwd)
+          FILE_PATH="$PROJECT_PATH/results/junit/results.xml"
+          echo "File Path: $FILE_PATH"
+          ls -R ./results/junit  # Add this line for debugging
 
           if [ -f "$FILE_PATH" ]; then
             echo "File exists. Submitting results to Xray..."
