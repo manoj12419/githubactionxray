@@ -20,7 +20,16 @@ jobs:
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
         run: |
-          curl -H "Content-Type: multipart/form-data" \
-               -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
-               -F "file=@./target/results/junit/results.xml" \
-               "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK" || { echo "Failed to submit results to Xray"; exit 1; }
+          FILE_PATH="./target/results/junit/results.xml"
+          echo "File Path: $FILE_PATH"
+
+          if [ -f "$FILE_PATH" ]; then
+            echo "File exists. Submitting results to Xray..."
+            curl -H "Content-Type: multipart/form-data" \
+                 -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+                 -F "file=@$FILE_PATH" \
+                 "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK" || { echo "Failed to submit results to Xray"; exit 1; }
+          else
+            echo "Error: File does not exist at the specified path."
+            exit 1
+          fi
