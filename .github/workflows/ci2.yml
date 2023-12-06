@@ -21,7 +21,7 @@ jobs:
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
         run: |
-          PROJECT_PATH="${{ github.workspace }}/$REPO_NAME"
+          PROJECT_PATH="${{ github.workspace }}$REPO_NAME"
           FILE_PATH="$PROJECT_PATH/results/junit/results.xml"
           echo "File Path: $FILE_PATH"
           ls -R $PROJECT_PATH/results/junit  # Add this line for debugging
