@@ -24,7 +24,7 @@ jobs:
           PROJECT_PATH="${{ github.workspace }}$REPO_NAME"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
           echo "File Path: $FILE_PATH"
-          ls -R $PROJECT_PATH/results/junit  # Add this line for debugging
+          ls -R $PROJECT_PATH/cypress/results/junit  # Add this line for debugging
 
           if [ -f "$FILE_PATH" ]; then
             echo "File exists. Submitting results to Xray..."
