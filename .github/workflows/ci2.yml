@@ -8,12 +8,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Checkout
-        uses: actions/checkout@v4
         with:
           path: ${{ github.workspace }} # Specify the target directory for checkout
           repository: ${{ github.repository }}
+          full-repo: true
 
       - name: Submit results to Xray
         env:
