@@ -28,10 +28,18 @@ jobs:
 
           if [ -f "$FILE_PATH" ]; then
             echo "File exists. Submitting results to Xray..."
-            curl -H "Content-Type: multipart/form-data" \
-                 -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
-                 -F "file=@$FILE_PATH" \
-                 "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK" || { echo "Failed to submit results to Xray"; exit 1; }
+            RESPONSE=$(curl -H "Content-Type: multipart/form-data" \
+                       -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+                       -F "file=@$FILE_PATH" \
+                       "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK")
+
+            echo "Response: $RESPONSE"
+
+            # Check for errors in the response
+            if echo "$RESPONSE" | grep -q '"status-code":404'; then
+              echo "Error: 404 - Resource not found."
+              exit 1
+            fi
           else
             echo "Error: File does not exist at the specified path."
             exit 1
