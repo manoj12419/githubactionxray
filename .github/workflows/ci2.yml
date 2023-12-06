@@ -12,7 +12,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: ./ # Specify the target directory for checkout
+          path: ${{ github.workspace }} # Specify the target directory for checkout
+          repository: ${{ github.repository }}
 
       - name: Submit results to Xray
         env:
@@ -22,7 +23,7 @@ jobs:
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
         run: |
-          PROJECT_PATH=$(pwd)
+          PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/results/junit/results.xml"
           echo "File Path: $FILE_PATH"
           ls -R ./results/junit  # Add this line for debugging
