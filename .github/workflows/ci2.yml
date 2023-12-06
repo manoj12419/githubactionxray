@@ -6,12 +6,17 @@ jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
+      - name: Set Repository Name
+        run: echo "REPO_NAME=$(echo "${{ github.repository }}" | cut -d'/' -f 2)" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+        with:
+          path: ${{ github.workspace }}/$REPO_NAME # Specify the target directory for checkout
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
+
       - name: Submit results to Xray
         env:
           JIRA_SERVER_URL: https://myappyaksha.atlassian.net/
