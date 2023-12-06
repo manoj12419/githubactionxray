@@ -23,7 +23,7 @@ jobs:
           record: false
           publish-summary: true
           component: false
-        working-directory: ${{ github.workspace }}/$REPO_NAME
+          working-directory: ${{ github.workspace }}/$REPO_NAME
 
       - name: Submit results to Xray
         env:
