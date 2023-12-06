@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<testsuites>
+<testsuite name="Root Suite" timestamp="2023-12-06T06:53:01" tests="0" file="cypress\e2e\Test\todo.cy.js" time="0.000" failures="0"></testsuite>
+<testsuite name="example to-do app" timestamp="2023-12-06T06:53:01" tests="2" time="7.537" failures="0">
+  
+  <testcase name="example to-do app YAK-2 displays two todo items by default" time="2.153" classname="YAK-2 displays two todo items by default"></testcase>
+  
+  <testcase name="example to-do app YAK-1 can add new todo items" time="0.994" classname="YAK-1 can add new todo items"></testcase>
+  
+</testsuite>
+
+</testsuites>
