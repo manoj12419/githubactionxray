@@ -6,12 +6,16 @@ jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
+      - name: Set Repository Name
+        run: echo "REPO_NAME=${{ github.repository }}" >> $GITHUB_ENV
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          path: ${{ github.workspace }} # Specify the target directory for checkout
-          repository: ${{ github.repository }}
-          full-repo: true
+          path: ${{ github.workspace }}/$REPO_NAME # Specify the target directory for checkout
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
 
       - name: Submit results to Xray
         env:
@@ -21,10 +25,10 @@ jobs:
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
         run: |
-          PROJECT_PATH="${{ github.workspace }}"
+          PROJECT_PATH="${{ github.workspace }}/$REPO_NAME"
           FILE_PATH="$PROJECT_PATH/results/junit/results.xml"
           echo "File Path: $FILE_PATH"
-          ls -R ./results/junit  # Add this line for debugging
+          ls -R $PROJECT_PATH/results/junit  # Add this line for debugging
 
           if [ -f "$FILE_PATH" ]; then
             echo "File exists. Submitting results to Xray..."
