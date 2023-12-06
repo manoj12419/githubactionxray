@@ -1,15 +1,17 @@
-name: Xray integration
+name: Xray Integration
+
 on: push
+
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
+
       - name: Submit results to Xray
         env:
           JIRA_SERVER_URL: https://myappyaksha.atlassian.net/
@@ -17,4 +19,8 @@ jobs:
           JIRA_API_TOKEN: ATATT3xFfGF0CoWBlEb07p8IwW6CmiIkCAAwP9N1_tzXpBFyk1SK4ADfodj5BOg5GbC58HnEXIwmUxvY0TaGNpNQ7NK4LD9U14fg3S84QzxNb8WFGufmUevYTu09kiSldUTmcC-bteoaLm9AJLvJ3NRW725vYaQpIJrALoC3Ko-IagLNeniw77M=569104D1
           XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
           XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
-        run: 'curl -H "Content-Type: multipart/form-data" -u $JIRA_USERNAME:$JIRA_API_TOKEN -F "file=@target/results/junit/results.xml" "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK"'
+        run: |
+          curl -H "Content-Type: multipart/form-data" \
+               -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
+               -F "file=@./target/results/junit/results.xml" \
+               "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK" || { echo "Failed to submit results to Xray"; exit 1; }
