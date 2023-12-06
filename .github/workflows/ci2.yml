@@ -31,7 +31,7 @@ jobs:
             RESPONSE=$(curl -H "Content-Type: multipart/form-data" \
                        -u "$JIRA_USERNAME:$JIRA_API_TOKEN" \
                        -F "file=@$FILE_PATH" \
-                       "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK")
+                       "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4")
 
             echo "Response: $RESPONSE"
 
