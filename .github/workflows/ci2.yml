@@ -8,39 +8,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
 
-      - name: Submit results to Xray
+      - name: Authenticate with Xray
+        id: authenticate-xray
         env:
-          JIRA_SERVER_URL: https://myappyaksha.atlassian.net/
-          JIRA_USERNAME: manojnarikdp@gmail.com
-          JIRA_API_TOKEN: ATATT3xFfGF0CoWBlEb07p8IwW6CmiIkCAAwP9N1_tzXpBFyk1SK4ADfodj5BOg5GbC58HnEXIwmUxvY0TaGNpNQ7NK4LD9U14fg3S84QzxNb8WFGufmUevYTu09kiSldUTmcC-bteoaLm9AJLvJ3NRW725vYaQpIJrALoC3Ko-IagLNeniw77M=569104D1
-          XRAY_CLIENT_ID: 8AC00938E3A0491094CF84962B5D4EA1
-          XRAY_CLIENT_SECRET: 2717c2b4c5b82505687417ed9870f9383893293b6026836d589600ef84d8c579
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
         run: |
-          PROJECT_PATH="${{ github.workspace }}/$REPO_NAME"
+          PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
           echo "File Path: $FILE_PATH"
-          ls -R $PROJECT_PATH/cypress/results/junit  # Add this line for debugging
+          
+          RESPONSE=$(curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/authenticate' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+            "client_id": "'"$CLIENT_ID"'",
+            "client_secret": "'"$CLIENT_SECRET"'"
+          }')
 
-          if [ -f "$FILE_PATH" ]; then
-            echo "File exists. Submitting results to Xray..."
-            RESPONSE=$(curl --location "$JIRA_SERVER_URL/rest/raven/1.0/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4" \
-                             --header "Authorization: Basic $JIRA_API_TOKEN" \
-                             --header "Content-Type: multipart/form-data" \
-                             --form "file=@$FILE_PATH")
+          XRAY_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
+          echo "Xray Token: $XRAY_TOKEN"
 
-            echo "Response: $RESPONSE"
-
-            # Check for errors in the response
-            if echo "$RESPONSE" | grep -q '"status-code":404'; then
-              echo "Error: 404 - Resource not found."
-              exit 1
-            fi
-          else
-            echo "Error: File does not exist at the specified path."
-            exit 1
-          fi
+      - name: Submit results to Xray
+        run: |
+          PROJECT_PATH="${{ github.workspace }}"
+          FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
+          echo "File Path: $FILE_PATH"
+          
+          curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4' \
+          --header "Authorization: Bearer $XRAY_TOKEN" \
+          --header 'Content-Type: application/xml' \
+          --data-binary "@$FILE_PATH"
