@@ -1,11 +1,8 @@
 name: Xray Integration
 
-on: push
-
-jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
-    inputs:
+on: 
+ workflow_dispatch:
+  inputs:
       xray-token:
         description: 'Xray authentication token'
         required: true
@@ -14,7 +11,11 @@ jobs:
         required: true
       test-plan-key:
         description: 'Xray test plan key'
-        required: true
+        required: true  
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04    
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -25,8 +26,8 @@ jobs:
       - name: Authenticate with Xray
         id: authenticate-xray
         env:
-          CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}  # Replace with your client ID secret
-          CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}  # Replace with your client secret secret
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
         run: |
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
