@@ -51,6 +51,6 @@ jobs:
 
           # Capture the status code of the curl command
           curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4' \
-          --header 'Authorization: Bearer $RESPONSE' \
+          --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiI3MTc5OGI0YS1jNzdmLTM5NTctYjdhMC1kMjVlNmE3OWI0MDYiLCJhY2NvdW50SWQiOiI2M2I3NGI0NzZmMDY4ZWZlYzhmOGUxOWUiLCJpc1hlYSI6ZmFsc2UsImlhdCI6MTcxMjE4NzIzOCwiZXhwIjoxNzEyMjczNjM4LCJhdWQiOiJDMkREQzAzRUI4MDE0ODVFOTNBOEExQkJGMjlBNjBGOCIsImlzcyI6ImNvbS54cGFuZGl0LnBsdWdpbnMueHJheSIsInN1YiI6IkMyRERDMDNFQjgwMTQ4NUU5M0E4QTFCQkYyOUE2MEY4In0.2hG8PECK6DN8vlhzu4aLtkBxKepgDBVPIGJe98FTpkc' \
           --header 'Content-Type: application/xml' \
           --data-binary '@/C:/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml'
