@@ -29,29 +29,25 @@ jobs:
           echo "CLIENT_ID: $CLIENT_ID"
           echo "CLIENT_SECRET: $CLIENT_SECRET"
 
-      - name: Authenticate with Xray   
-        id: authenticate
+      - name: Authenticate with Xray and Submit results
+        id: authenticate_and_submit
         run: |
+          # Authenticate with Xray
           RESPONSE=$(curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/authenticate' \
           --header 'Content-Type: application/json' \
           --data-raw '{ "client_id": "C2DDC03EB801485E93A8A1BBF29A60F8","client_secret": "f25bc582a1c9a41875413da9a083f5ff082bb241f446780cc705636dbb5feb8c" }')
           echo "Response from Xray: $RESPONSE"
-          
-      - name: Submit results to Xray
-        env:
-          XRAY_RESPONSE: $RESPONSE
-          run: |
-           echo "Response from Xray: $RESPONSE"
-        run: |
+
+          # Submit results to Xray
           echo "Submitting results to Xray..."
-          echo "Using Xray authentication response: $XRAY_RESPONSE"
+          echo "Using Xray authentication response: $RESPONSE"
           
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
+          echo "Project path: $PROJECT_PATH"
           echo "File Path: $FILE_PATH"
           
-          curl -v --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ github.event.inputs.project-key }}&testPlanKey=${{ github.event.inputs.test-plan-key }}" \
-          --header "Authorization: Bearer $XRAY_RESPONSE" \
+          curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4' \
+          --header "Authorization: Bearer $RESPONSE" \
           --header 'Content-Type: application/xml' \
           --data-binary @"$FILE_PATH"
-
