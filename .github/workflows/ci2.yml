@@ -29,7 +29,8 @@ jobs:
           echo "CLIENT_ID: $CLIENT_ID"
           echo "CLIENT_SECRET: $CLIENT_SECRET"
 
-      - name: Authenticate with Xray     
+      - name: Authenticate with Xray   
+        id: authenticate
         run: |
           RESPONSE=$(curl --location --request POST 'https://xray.cloud.getxray.app/api/v1/authenticate' \
           --header 'Content-Type: application/json' \
@@ -38,13 +39,12 @@ jobs:
           
       - name: Submit results to Xray
         env:
-          XRAY_TOKEN: ${{ secrets.XRAY_TOKEN }}  # Replace with your Xray token secret
+          XRAY_RESPONSE: ${{ steps.authenticate.outputs.xray_response }}
         run: |
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
-          echo "File Path: $FILE_PATH"
-          
+          echo "File Path: $FILE_PATH"          
           curl --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ github.event.inputs.project-key }}&testPlanKey=${{ github.event.inputs.test-plan-key }}" \
-          --header "Authorization: Bearer $XRAY_TOKEN" \
+          --header "Authorization: Bearer $XRAY_RESPONSE" \
           --header 'Content-Type: application/xml' \
           --data-binary @"$FILE_PATH"
