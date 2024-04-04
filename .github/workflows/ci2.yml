@@ -9,15 +9,7 @@ on:
         default: 'YAK'
       test-plan-key:
         description: 'Xray test plan key'
-        required: true
-
-# on: 
-#  workflow_dispatch:
-#   inputs: 
-#     environment:
-#       description: "the environment to deploy"
-#       required: true
-#       default: 'production'
+        required: true       
 
 jobs:
   cypress-run:
@@ -29,8 +21,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
 
-      - name: Authenticate with Xray
-        id: authenticate-xray
+      - name: Authenticate with Xray       
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
@@ -50,6 +41,14 @@ jobs:
           echo "Xray Token: $XRAY_TOKEN"
 
       - name: Submit results to Xray
+        env:
+          XRAY_TOKEN: ${{ secrets.XRAY_TOKEN }}  # Replace with your Xray token secret
         run: |
           PROJECT_PATH="${{ github.workspace }}"
-          FILE_PATH="$PROJECT_PATH/cypress/results/juni
+          FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
+          echo "File Path: $FILE_PATH"
+          
+          curl --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ github.event.inputs.project-key }}&testPlanKey=${{ github.event.inputs.test-plan-key }}" \
+          --header "Authorization: Bearer $XRAY_TOKEN" \
+          --header 'Content-Type: application/xml' \
+          --data-binary @"$FILE_PATH"
