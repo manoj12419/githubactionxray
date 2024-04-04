@@ -49,7 +49,9 @@ jobs:
           
           echo "JWT Token in Authorization Header: $RESPONSE"  # Debugging output for Authorization header
 
-          curl -v --location --request POST 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4' \
+          # Capture the status code of the curl command
+          STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" --location --request POST 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4' \
           --header "Authorization: Bearer $RESPONSE" \
           --header 'Content-Type: application/xml' \
-          --data-binary @"$FILE_PATH"
+          --data-binary @"$FILE_PATH")
+          echo "Status Code: $STATUS_CODE"
