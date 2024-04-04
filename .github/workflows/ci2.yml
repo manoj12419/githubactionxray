@@ -39,12 +39,19 @@ jobs:
           
       - name: Submit results to Xray
         env:
-          XRAY_RESPONSE: ${{ steps.authenticate.outputs.xray_response }}
+          XRAY_RESPONSE: $RESPONSE
+          run: |
+           echo "Response from Xray: $RESPONSE"
         run: |
+          echo "Submitting results to Xray..."
+          echo "Using Xray authentication response: $XRAY_RESPONSE"
+          
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
-          echo "File Path: $FILE_PATH"          
-          curl --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ github.event.inputs.project-key }}&testPlanKey=${{ github.event.inputs.test-plan-key }}" \
+          echo "File Path: $FILE_PATH"
+          
+          curl -v --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ github.event.inputs.project-key }}&testPlanKey=${{ github.event.inputs.test-plan-key }}" \
           --header "Authorization: Bearer $XRAY_RESPONSE" \
           --header 'Content-Type: application/xml' \
           --data-binary @"$FILE_PATH"
+
