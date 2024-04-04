@@ -32,14 +32,9 @@ jobs:
       - name: Authenticate with Xray     
         run: |
           RESPONSE=$(curl -v --location --request POST 'https://xray.cloud.getxray.app/api/v1/authenticate' \
-            --header 'Content-Type: application/json' \
-            --data-raw '{
-            "client_id": "'"$CLIENT_ID"'",
-            "client_secret": "'"$CLIENT_SECRET"'"
-              }')
-
+          --header 'Content-Type: application/json' \
+          --data-raw "{\"client_id\": \"$CLIENT_ID\", \"client_secret\": \"$CLIENT_SECRET\"}")
             echo "Response: $RESPONSE"
-
             XRAY_TOKEN=$(echo "$RESPONSE" | jq -r '.access_token')
             echo "Xray Token: $XRAY_TOKEN"
 
