@@ -25,8 +25,8 @@ jobs:
       - name: Authenticate with Xray
         id: authenticate-xray
         env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
+          CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}  # Replace with your client ID secret
+          CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}  # Replace with your client secret secret
         run: |
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
