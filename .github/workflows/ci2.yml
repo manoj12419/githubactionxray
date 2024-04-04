@@ -1,21 +1,18 @@
 name: Xray Integration
 
-on: 
- workflow_dispatch:
-  inputs:
-      xray-token:
-        description: 'Xray authentication token'
-        required: true
+on:
+  workflow_dispatch:
+    inputs:
       project-key:
         description: 'Xray project key'
         required: true
       test-plan-key:
         description: 'Xray test plan key'
-        required: true  
+        required: true
 
 jobs:
   cypress-run:
-    runs-on: ubuntu-22.04    
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,10 +43,4 @@ jobs:
       - name: Submit results to Xray
         run: |
           PROJECT_PATH="${{ github.workspace }}"
-          FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
-          echo "File Path: $FILE_PATH"
-          
-          curl --location --request POST "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=${{ inputs.project-key }}&testPlanKey=${{ inputs.test-plan-key }}" \
-          --header "Authorization: Bearer ${{ inputs.xray-token }}" \
-          --header 'Content-Type: application/xml' \
-          --data-binary "@$FILE_PATH"
+          FILE_PATH="$PROJECT_PATH/cypress/results/juni
