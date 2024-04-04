@@ -23,8 +23,8 @@ jobs:
 
       - name: Set environment variables
         env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
+          CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}  # Replace with your client ID secret
+          CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}  # Replace with your client secret secret
         run: |
           echo "CLIENT_ID: $CLIENT_ID"
           echo "CLIENT_SECRET: $CLIENT_SECRET"
