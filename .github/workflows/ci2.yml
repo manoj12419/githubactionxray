@@ -6,6 +6,7 @@ on:
       project-key:
         description: 'Xray project key'
         required: true
+        default: 'YAK'
       test-plan-key:
         description: 'Xray test plan key'
         required: true
