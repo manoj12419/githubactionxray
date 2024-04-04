@@ -1,14 +1,22 @@
 name: Xray Integration
 
-on:
-  workflow_dispatch:
-    inputs:
-      project-key:
-        description: 'Xray project key'
-        required: true
-      test-plan-key:
-        description: 'Xray test plan key'
-        required: true
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       project-key:
+#         description: 'Xray project key'
+#         required: true
+#       test-plan-key:
+#         description: 'Xray test plan key'
+#         required: true
+
+on: 
+ workflow_dispatch:
+  inputs: 
+    environment:
+      description: "the environment to deploy"
+      required: true
+      default: 'production'
 
 jobs:
   cypress-run:
