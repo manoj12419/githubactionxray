@@ -21,10 +21,15 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
 
-      - name: Authenticate with Xray       
+      - name: Set environment variables
         env:
           CLIENT_ID: ${{ secrets.CLIENT_ID }}  # Replace with your client ID secret
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}  # Replace with your client secret secret
+        run: |
+          echo "CLIENT_ID: $CLIENT_ID"
+          echo "CLIENT_SECRET: $CLIENT_SECRET"
+
+      - name: Authenticate with Xray     
         run: |
           PROJECT_PATH="${{ github.workspace }}"
           FILE_PATH="$PROJECT_PATH/cypress/results/junit/results.xml"
