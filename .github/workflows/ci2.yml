@@ -26,6 +26,7 @@ jobs:
          CLIENT_ID1: "test"        
         run: |
           echo "set1 output: $CLIENT_ID1"
+          echo "::set-env name=CLIENT_ID1::$CLIENT_ID1"
          
       - name: Set2
         run: |
