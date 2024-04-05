@@ -20,6 +20,15 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
+      - name: Set1
+        env:
+         CLIENT_ID1: "test"        
+        run: |
+          echo "set1 output: $CLIENT_ID1"
+         
+      - name: Set2
+        run: |
+         echo "set2 output: $CLIENT_ID1"
 
       - name: Set environment variables
         env:
