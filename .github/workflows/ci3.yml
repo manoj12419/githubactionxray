@@ -1,6 +1,6 @@
 name: Xray Upload
  
- on:
+on:
   workflow_dispatch:
     inputs:
       testid:
