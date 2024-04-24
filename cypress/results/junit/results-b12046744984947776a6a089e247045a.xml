@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="5.103" tests="2" failures="0">
+  <testsuite name="Root Suite" timestamp="2024-04-03T23:47:58" tests="0" file="cypress\e2e\Test\todo.cy.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="example to-do app" timestamp="2024-04-03T23:47:58" tests="2" time="5.057" failures="0">
+    <testcase name="example to-do app YAK-2 displays two todo items by default" time="0.764" classname="YAK-2 displays two todo items by default">
+    </testcase>
+    <testcase name="example to-do app YAK-1 can add new todo items" time="0.641" classname="YAK-1 can add new todo items">
+    </testcase>
+  </testsuite>
+</testsuites>
