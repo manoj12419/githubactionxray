@@ -10,8 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v6     
+
+      - name: List files in .github/workflows/
+        run: |
+          ls -al ${{ github.workspace }}/
 
       - name: Run PowerShell script
         shell: pwsh
