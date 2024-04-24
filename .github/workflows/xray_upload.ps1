@@ -19,9 +19,9 @@ $body = @{
 } | ConvertTo-Json
 
 $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
-
+$response 
 # Extract the token from the response
-$token = $response.token
+$token = $response
 
 # API request with token
 Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4" -Method Post -Headers @{
