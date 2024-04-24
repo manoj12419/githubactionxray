@@ -22,7 +22,7 @@ jobs:
           ls  ../
       - name: List files in current directory
         run: |
-          ls  ./workflows
+          ls   ./github/workflows
 
       - name: Run PowerShell script
         shell: pwsh
