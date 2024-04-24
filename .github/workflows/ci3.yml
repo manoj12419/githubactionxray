@@ -13,15 +13,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: List files in current directory
-        run: |
-          ls -al $GITHUB_WORKSPACE
-      
-      - name: List files in .github/workflows/
-        run: |
-          ls -al .github/workflows/
-
       - name: Run PowerShell script
         shell: pwsh
         run: |
-          ./.github/workflows/xray_upload.ps1 -client_id ${{ secrets.CLIENT_ID }} -client_secret ${{ secrets.CLIENT_SECRET }} -filePath ${{ github.workspace }}/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml
+          ./.github/workflows/xray_upload.ps1 `
+          -client_id ${{ secrets.CLIENT_ID }} `
+          -client_secret ${{ secrets.CLIENT_SECRET }} `
+          -filePath "${{ github.workspace }}/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml"
