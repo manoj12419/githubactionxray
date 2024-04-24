@@ -18,7 +18,7 @@ jobs:
 
       - name: List files in .github/workflows/
         run: |
-          ls -al ${{ github.workspace }}/
+          ls -al ${{ github.workspace }}/cypress/results
 
       - name: Run PowerShell script
         shell: pwsh
