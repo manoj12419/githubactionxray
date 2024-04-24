@@ -18,7 +18,15 @@ jobs:
 
       - name: List files in .github/workflows/
         run: |
-          ls -al ${{ github.workspace }}/cypress/results
+          ls -al ${{ github.workspace }}/cypress/results/junit/
+      
+      - name: Merge report
+        run: |
+          npx junit-merge -d ${{ github.workspace }}/cypress/results/junit/ -o ${{ github.workspace }}/cypress/results/junit/results.xml
+
+      - name: List files in .github/workflows/
+        run: |
+          ls -al ${{ github.workspace }}/cypress/results/junit/
 
       - name: Run PowerShell script
         shell: pwsh
