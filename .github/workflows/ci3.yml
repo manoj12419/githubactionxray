@@ -1,9 +1,21 @@
 name: Xray Upload
 
 on:
-  push:
-    branches:
-      - main
+ workflow_call:
+  inputs:
+    testid: 
+     description: 'Test ID '
+     required: true
+     type: string
+    testexecutionid: 
+     description: 'Test Exec ID'
+     required: true
+     type: string
+   
+    
+  # push:
+  #   branches:
+  #     - main
 
 jobs:
   upload:
@@ -35,6 +47,10 @@ jobs:
           -client_id '${{secrets.XRAY_CLIENT_ID}}' `
           -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
           -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
+          -testId '${{ inputs.testid }}' `
+          -testExecId '${{ inputs.testexecutionid }}' `
+          
+          
 
 
 
