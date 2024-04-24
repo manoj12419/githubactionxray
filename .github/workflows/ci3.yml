@@ -5,14 +5,12 @@ name: Xray Upload
     inputs:
       testid:
         description: 'Xray testid'
-        required: true        
+        required: true  
+        type: string      
       testexecutionid:
         description: 'Xray execid'
-        required: true     
-    
-  # push:
-  #   branches:
-  #     - main
+        required: true  
+        type: string         
 
 jobs:
   upload:
