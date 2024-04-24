@@ -4,6 +4,10 @@ param (
     [string]$filePath
 )
 
+Write-Output "Received client_id: $client_id"
+Write-Output "Received client_secret: $client_secret"
+Write-Output "Received filePath: $filePath"
+
 # Authentication request
 $uri = "https://xray.cloud.getxray.app/api/v1/authenticate"
 $headers = @{
