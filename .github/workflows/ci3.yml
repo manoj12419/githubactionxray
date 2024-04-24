@@ -20,6 +20,9 @@ jobs:
       - name: List files in current directory
         run: |
           ls  ../
+      - name: List files in current directory
+        run: |
+          ls  ./workflows
 
       - name: Run PowerShell script
         shell: pwsh
