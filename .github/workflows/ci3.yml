@@ -17,7 +17,7 @@ jobs:
         run: |
           ls -al $GITHUB_WORKSPACE
 
-       - name: List files in current directory
+      - name: List files in current directory
         run: |
           ls  $GITHUB_WORKSPACE/datadir
 
