@@ -19,7 +19,7 @@ jobs:
 
       - name: List files in current directory
         run: |
-          ls  $GITHUB_WORKSPACE/datadir
+          ls  ../
 
       - name: Run PowerShell script
         shell: pwsh
