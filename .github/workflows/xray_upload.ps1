@@ -18,13 +18,16 @@ $body = @{
     "client_secret" = $client_secret
 } | ConvertTo-Json
 
-$response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body
-$response 
-# Extract the token from the response
-$token = $response
+try {
+    $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $body -ErrorAction Stop
+    
 
-# API request with token
-Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4" -Method Post -Headers @{
-    "Authorization" = "Bearer $token"
-    "Content-Type" = "application/xml"
-} -InFile $filePath
+    # API request with token
+    Invoke-RestMethod -Uri "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4" -Method Post -Headers @{
+        "Authorization" = "Bearer $response"
+        "Content-Type" = "application/xml"
+    } -InFile $filePath
+} catch {
+    Write-Error $_.Exception.Message
+    exit 1
+}
