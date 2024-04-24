@@ -32,6 +32,10 @@ jobs:
         shell: pwsh
         run: |
           ./.github/workflows/xray_upload.ps1 `
-          -client_id ${{secrets.XRAY_CLIENT_ID}} `
-          -client_secret ${{secrets.XRAY_CLIENT_SECRET}} `
-          -filePath "${{ github.workspace }}/cypress/results/junit/results.xml"
+          -client_id '${{secrets.XRAY_CLIENT_ID}}' `
+          -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
+          -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
+
+
+
+
