@@ -1,17 +1,14 @@
 name: Xray Upload
-
-on:
- workflow_call:
-  inputs:
-    testid: 
-     description: 'Test ID '
-     required: true
-     type: string
-    testexecutionid: 
-     description: 'Test Exec ID'
-     required: true
-     type: string
-   
+ 
+ on:
+  workflow_dispatch:
+    inputs:
+      testid:
+        description: 'Xray testid'
+        required: true        
+      testexecutionid:
+        description: 'Xray execid'
+        required: true     
     
   # push:
   #   branches:
