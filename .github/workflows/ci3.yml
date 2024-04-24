@@ -25,6 +25,3 @@ jobs:
         shell: pwsh
         run: |
           ./.github/workflows/xray_upload.ps1 -client_id ${{ secrets.CLIENT_ID }} -client_secret ${{ secrets.CLIENT_SECRET }} -filePath ${{ github.workspace }}/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml
-        env:
-          CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
