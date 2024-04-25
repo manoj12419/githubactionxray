@@ -10,9 +10,8 @@ def authenticate(client_id, client_secret):
     response = requests.post(uri, headers=headers, data=body)
     response.raise_for_status()
     print("Authentication response:")
-    print(response.text)
-    print(f"Authorization: Bearer {response.text}")
-    return response
+    print(response.text)    
+    return response.text
 
 def import_execution_junit(token, test_id, file_path):
     print(f"Authorization: Bearer {token}")
@@ -43,4 +42,5 @@ if __name__ == "__main__":
     print(f"Received file path: {file_path}")
 
     token = authenticate(client_id, client_secret)
+    print(f"Authorization: Bearer {token}")
     import_execution_junit(token, test_id, file_path)
