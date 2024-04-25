@@ -53,7 +53,7 @@ jobs:
 
       - name: Run Python script
         run: |
-          python ./.github/workflows/test/xray_upload.py \
+          python ./.github/workflows/test/uploadtest.py \
             -client_id ${{ secrets.XRAY_CLIENT_ID }} \
             -client_secret ${{ secrets.XRAY_CLIENT_SECRET }} \
             -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" \
