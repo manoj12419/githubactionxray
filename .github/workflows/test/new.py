@@ -31,27 +31,12 @@ def upload_junit_results(args):
         "Content-Type": "application/xml",
     }
 
-    url2=f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
-    request2=requests.post(url2, headers=header, files=args.file_path)
-    print(request2.text)
+    url_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    files = {'file': open(args.file_path, 'rb')}
+    response_import_execution = requests.post(url_import_execution, headers=header, files=files)
+    print(response_import_execution.text)
 
-    # response_authenticate = requests.post(uri_authenticate, headers=headers_authenticate, data=data)
- 
-    # print(f"MN 2 Authorization: Bearer {response_authenticate.text}")
-    # print(f"MN 1 Authorization: Bearer {response_authenticate}")
-    # print(response_authenticate.text)
-    # # Assuming the response is a plain string
-    # #uri_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
-    
-    # uri_import_execution = "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4"
-    # headers_import_execution = {
-    #     "Authorization": f"Bearer {response_authenticate.text}",
-    #     "Content-Type": "application/xml",
-    # }
-
-    # response_import_execution = requests.post(uri_import_execution, headers=headers_import_execution, files=args.file_path)
-    # print(response_import_execution.text)  # Print API response for debugging
-    # #response_import_execution.raise_for_status()  # Keep this line to raise HTTPError if response status is not successful
+   
 
 if __name__ == "__main__":
     args = parse_args()
