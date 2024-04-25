@@ -18,28 +18,23 @@ def import_execution_junit(token, test_id, file_path):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
-    print("parameter validation")
-    print(token)
-    print(test_id)
-    print(file_path)
-    print(uri)
 
-    with open(file_path, "rb") as file:
-        response = requests.post(uri, headers=headers, files={"file": file})
-        response.raise_for_status()
-        print("Import successful.")
-        print(response.text)  # Print API response for debugging
+    # Assuming file_path is the content of the XML file
+    response = requests.post(uri, headers=headers, data=file_path)
+    response.raise_for_status()
+    print("Import successful.")
+    print(response.text)  # Print API response for debugging
 
-client_id, client_secret, file_path, test_id, test_exec_id = sys.argv[1:]
+client_id, client_secret, file_content, test_id, test_exec_id = sys.argv[1:]
 
 print(f"Testplan id: {test_id}")
 print(f"Test exec id: {test_exec_id}")
 print(f"Received client_id: {client_id}")
 print(f"Received client_secret: {client_secret}")
-print(f"Received filePath: {file_path}")
+print(f"Received filePath: {file_content}")
 
 token = authenticate(client_id, client_secret)
 if token:
-    import_execution_junit(token, test_id, file_path)
+    import_execution_junit(token, test_id, file_content)
 else:
     print("Authentication failed.")
