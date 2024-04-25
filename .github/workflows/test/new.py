@@ -29,12 +29,12 @@ def upload_junit_results():
     print(f"MN 2 Authorization: Bearer {response_authenticate.text}")
     print(f"MN 1 Authorization: Bearer {response_authenticate}")
     print(response_authenticate.text)
-    token = response_authenticate.text  # Assuming the response is a plain string
+    # Assuming the response is a plain string
     #uri_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
     
     uri_import_execution = "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4"
     headers_import_execution = {
-        "Authorization": f"Bearer {response_authenticate}",
+        "Authorization": f"Bearer {response_authenticate.text}",
         "Content-Type": "application/xml",
     }
 
