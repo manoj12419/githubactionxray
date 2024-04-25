@@ -1,6 +1,7 @@
 import argparse
 import requests
 import json
+import os
 
 def authenticate(client_id, client_secret):
     uri = "https://xray.cloud.getxray.app/api/v1/authenticate"
