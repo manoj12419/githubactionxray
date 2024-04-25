@@ -24,18 +24,32 @@ def import_execution_junit(token, test_id, file_content):
     print(f"Headers: {headers}")
     print("File content:")
     print(file_content)
+  
+    url = 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4'
+    headers = {
+        'Authorization': f'Bearer {token}',
+        'Content-Type': 'application/xml'
+    }
 
-    try:
-    # Make the request with authentication
-        response = requests.post(uri, headers=headers, data=file_content)
-        response.raise_for_status()
-        print("Import done.")
-        print(response)
-    except requests.exceptions.HTTPError as e:
-        if e.response.status_code == 401:
-            print("Authentication failed. Check your authentication token.")
-        else:
-            print(f"HTTP error occurred: {e}")
+    #file_path = '/C:/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml'
+    with open(file_content, 'rb') as file:
+        data = file.read()
+
+    response = requests.post(url, headers=headers, data=data)
+    print(response.text)
+    print(response.status_code)
+    print(response.text)
+# try:
+#     # Make the request with authentication
+#         response = requests.post(uri, headers=headers, data=file_content)
+#         response.raise_for_status()
+#         print("Import done.")
+#         print(response)
+#     except requests.exceptions.HTTPError as e:
+#         if e.response.status_code == 401:
+#             print("Authentication failed. Check your authentication token.")
+#         else:
+#             print(f"HTTP error occurred: {e}")
 
     
 client_id, client_secret, file_content, test_id, test_exec_id = sys.argv[1:]
