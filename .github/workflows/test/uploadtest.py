@@ -11,6 +11,7 @@ def authenticate(client_id, client_secret):
     response.raise_for_status()
     print("Authentication response:")
     print(response.text)
+    print(f"Authorization: Bearer {response.text}")
     return response
 
 def import_execution_junit(token, test_id, file_path):
