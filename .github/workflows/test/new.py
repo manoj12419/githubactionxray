@@ -17,7 +17,7 @@ def upload_junit_results(args):
     print(f"File path: {args.file_path}")
 
     url = "https://xray.cloud.getxray.app/api/v1/authenticate"
-    headers_authenticate = {"Content-Type": "application/json"}
+    #headers_authenticate = {"Content-Type": "application/json"}
     data = {
         'client_id':args.client_id,
         'client_secret': args.client_secret,
@@ -26,6 +26,14 @@ def upload_junit_results(args):
     request= requests.post(url,data=data)
     print(request)
     print(request.text)
+    header = {
+        "Authorization": f"Bearer {request.text}",
+        "Content-Type": "application/xml",
+    }
+
+    url2=f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    request2=requests.post(url2, headers=header, files=args.file_path)
+    print(request2.text)
 
     # response_authenticate = requests.post(uri_authenticate, headers=headers_authenticate, data=data)
  
