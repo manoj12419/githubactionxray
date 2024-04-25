@@ -43,7 +43,9 @@ def main():
     print(f"Client ID: {args.client_id}")
     print(f"Client secret: {args.client_secret}")
     print(f"File path: {args.file_path}")
-
+    if not os.path.exists(args.file_path):
+        print(f"Error: File '{args.file_path}' does not exist.")
+        return
     token = authenticate(args.client_id, args.client_secret)
     if token:
         import_execution_junit(token, args.test_id, args.file_path)
