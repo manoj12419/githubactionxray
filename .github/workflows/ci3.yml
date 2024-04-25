@@ -67,7 +67,7 @@ jobs:
 
       - name: Upload JUnit Results to Xray
         run: |
-          python new.py ${{ secrets.XRAY_CLIENT_ID }} ${{ secrets.XRAY_CLIENT_SECRET }} ${{ github.workspace }}/cypress/results/junit/results.xml ${{ inputs.testid }}
+          python ./.github/workflows/test/new.py ${{ secrets.XRAY_CLIENT_ID }} ${{ secrets.XRAY_CLIENT_SECRET }} ${{ github.workspace }}/cypress/results/junit/results.xml ${{ inputs.testid }}
 
 
 
