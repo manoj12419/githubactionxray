@@ -11,55 +11,35 @@ def authenticate(client_id, client_secret):
     response.raise_for_status()
     print("Authentication response:")
     print(response.text)
-    return response.text  # Assuming the response is a plain string
+    return response.json()['access_token']
 
-def import_execution_junit(token, test_id, file_content):
+def import_execution_junit(token, test_id, file_path):
     uri = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={test_id}"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
-    print("Import request:")
-    print(f"URI: {uri}")
-    print(f"Headers: {headers}")
-    print("File content:")
-    print(file_content)
-  
-    url = 'https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey=YAK-4'
-    headers = {
-        'Authorization': f'Bearer {token}',
-        'Content-Type': 'application/xml'
-    }
 
-    #file_path = '/C:/Cypress-xray-integration/githubactionxray/cypress/results/junit/results.xml'
-    with open(file_content, 'rb') as file:
+    with open(file_path, 'rb') as file:
         data = file.read()
 
-    response = requests.post(url, headers=headers, data=data)
+    response = requests.post(uri, headers=headers, data=data)
+    print("Import response:")
     print(response.text)
-    print(response.status_code)
-    print(response.text)
-# try:
-#     # Make the request with authentication
-#         response = requests.post(uri, headers=headers, data=file_content)
-#         response.raise_for_status()
-#         print("Import done.")
-#         print(response)
-#     except requests.exceptions.HTTPError as e:
-#         if e.response.status_code == 401:
-#             print("Authentication failed. Check your authentication token.")
-#         else:
-#             print(f"HTTP error occurred: {e}")
+    print("Status code:", response.status_code)
 
-    
-client_id, client_secret, file_content, test_id, test_exec_id = sys.argv[1:]
+if __name__ == "__main__":
+    if len(sys.argv) != 6:
+        print("Usage: python script.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
+        sys.exit(1)
 
-print(f"Testplan id: {test_id}")
-print(f"Test exec id: {test_exec_id}")
-print(f"Received client_id: {client_id}")
-print(f"Received client_secret: {client_secret}")
-print(f"Received file content: {file_content}")
+    client_id, client_secret, file_path, test_id, test_exec_id = sys.argv[1:]
 
-token = authenticate(client_id, client_secret)
-print("token = authenticate(client_id, client_secret)")
-import_execution_junit(token, test_id, file_content)
+    print(f"Test plan id: {test_id}")
+    print(f"Test exec id: {test_exec_id}")
+    print(f"Received client_id: {client_id}")
+    print(f"Received client_secret: {client_secret}")
+    print(f"Received file path: {file_path}")
+
+    token = authenticate(client_id, client_secret)
+    import_execution_junit(token, test_id, file_path)
