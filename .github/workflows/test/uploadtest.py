@@ -25,7 +25,8 @@ def import_execution_junit(token, test_id, file_content):
     print("File content:")
     print(file_content)
 
-    response = requests.post(uri, headers=headers, data=file_content)
+    response = requests.post(uri, headers, file_content)
+    print("Import done.")
     response.raise_for_status()
     print("Import successful.")
     print(response.text)  # Print API response for debugging
@@ -40,7 +41,4 @@ print(f"Received file content: {file_content}")
 
 token = authenticate(client_id, client_secret)
 print("token = authenticate(client_id, client_secret)")
-if token:
-    import_execution_junit(token, test_id, file_content)
-else:
-    print("Authentication failed.")
+import_execution_junit(token, test_id, file_content)
