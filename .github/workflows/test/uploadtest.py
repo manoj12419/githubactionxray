@@ -23,6 +23,11 @@ def import_execution_junit(token, test_id, file_path):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
+    print("parameter validation")
+    print(token)
+    print(test_id)
+    print(file_path)
+    print(uri)
 
     try:
         with open(file_path, "rb") as file:
@@ -41,7 +46,7 @@ def import_execution_junit(token, test_id, file_path):
 def main():
     print("Before if Usage: python uploadtest.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
     if len(sys.argv) != 6:
-        print("Usage: python uploadtest.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
+        print("After if Usage: python uploadtest.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
         sys.exit(1)
 
     client_id, client_secret, file_path, test_id, test_exec_id = sys.argv[1:]
