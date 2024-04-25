@@ -35,17 +35,30 @@ jobs:
         run: |
           ls -al ${{ github.workspace }}/cypress/results/junit/
 
-      - name: Run PowerShell script
-        shell: pwsh
+      # - name: Run PowerShell script
+      #   shell: pwsh
+      #   run: |
+      #     ./.github/workflows/test/xray_upload.ps1 `
+      #     -client_id '${{secrets.XRAY_CLIENT_ID}}' `
+      #     -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
+      #     -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
+      #     -testId '${{ inputs.testid }}' `
+      #     -testExecId '${{ inputs.testexecutionid }}' `
+          
+          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Choose the appropriate Python version
+
+      - name: Run Python script
         run: |
-          ./.github/workflows/xray_upload.ps1 `
-          -client_id '${{secrets.XRAY_CLIENT_ID}}' `
-          -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
-          -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
-          -testId '${{ inputs.testid }}' `
-          -testExecId '${{ inputs.testexecutionid }}' `
-          
-          
+          python ./.github/workflows/test/xray_upload.py \
+            -client_id ${{ secrets.XRAY_CLIENT_ID }} \
+            -client_secret ${{ secrets.XRAY_CLIENT_SECRET }} \
+            -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" \
+            -testId ${{ inputs.testid }} \
+            -testExecId ${{ inputs.testexecutionid }}
 
 
 
