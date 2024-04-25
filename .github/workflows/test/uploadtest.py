@@ -14,15 +14,15 @@ def authenticate(client_id, client_secret):
     return response
 
 def import_execution_junit(token, test_id, file_path):
+    print(f"Authorization: Bearer {token}")
     uri = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={test_id}"
     headers = {
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
-
+  
     with open(file_path, 'rb') as file:
-        data = file.read()
-
+        data = file.read()    
     response = requests.post(uri, headers=headers, data=data)
     print("Import response:")
     print(response.text)
