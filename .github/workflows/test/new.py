@@ -3,16 +3,13 @@ import os
 import requests
 import json
 
-def parse_args():
+def upload_junit_results():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
     parser.add_argument("client_id", help="Xray client ID")
     parser.add_argument("client_secret", help="Xray client secret")
     parser.add_argument("file_path", help="Path to the JUnit results XML file")
     parser.add_argument("test_id", help="Test ID or test plan key")
-    return parser.parse_args()
-
-def main():
-    args = parse_args()
+    args = parser.parse_args()
 
     print(f"Test ID or test plan key: {args.test_id}")
     print(f"Client ID: {args.client_id}")
@@ -44,4 +41,4 @@ def main():
     response_import_execution.raise_for_status()  # Keep this line to raise HTTPError if response status is not successful
 
 if __name__ == "__main__":
-    main()
+    upload_junit_results()
