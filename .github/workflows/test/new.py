@@ -21,10 +21,15 @@ def import_execution_junit(token, test_id, file_path):
     }
 
     with open(file_path, "rb") as file:
-        response = requests.post(uri, headers=headers, files={"file": file})
-        response.raise_for_status()
-        print("Import successful.")
-        print(response.text)  # Print API response for debugging
+        try:
+            response = requests.post(uri, headers=headers, files={"file": file})
+            response.raise_for_status()
+            print("Import successful.")
+            print(response.text)  # Print API response for debugging
+        except requests.exceptions.HTTPError as e:
+            print(f"HTTP error occurred: {e}")
+            print(f"Response content: {e.response.text}")  # Print response content for debugging
+
 
 def main():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
