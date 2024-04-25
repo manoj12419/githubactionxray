@@ -45,7 +45,11 @@ jobs:
       #     -testId '${{ inputs.testid }}' `
       #     -testExecId '${{ inputs.testexecutionid }}' `
           
-          
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Choose the appropriate Python version
+    
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
@@ -54,11 +58,11 @@ jobs:
       - name: Run Python script
         run: |
           python ./.github/workflows/test/uploadtest.py \
-            -client_id ${{ secrets.XRAY_CLIENT_ID }} \
-            -client_secret ${{ secrets.XRAY_CLIENT_SECRET }} \
-            -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" \
-            -testId ${{ inputs.testid }} \
-            -testExecId ${{ inputs.testexecutionid }}
+            "${{ secrets.XRAY_CLIENT_ID }}" \
+            "${{ secrets.XRAY_CLIENT_SECRET }}" \
+            "${{ github.workspace }}/cypress/results/junit/results.xml" \
+            "${{ inputs.testid }}" \
+            "${{ inputs.testexecutionid }}"
 
 
 

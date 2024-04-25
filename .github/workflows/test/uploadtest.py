@@ -1,3 +1,4 @@
+import sys
 import requests
 import json
 
@@ -29,7 +30,13 @@ def import_execution_junit(token, test_id, file_path):
     except requests.exceptions.RequestException as e:
         print(f"Error during import: {e}")
 
-def main(client_id, client_secret, file_path, test_id, test_exec_id):
+def main():
+    if len(sys.argv) != 6:
+        print("Usage: python uploadtest.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
+        sys.exit(1)
+
+    client_id, client_secret, file_path, test_id, test_exec_id = sys.argv[1:]
+
     print(f"Testplan id: {test_id}")
     print(f"Test exec id: {test_exec_id}")
     print(f"Received client_id: {client_id}")
@@ -43,9 +50,4 @@ def main(client_id, client_secret, file_path, test_id, test_exec_id):
         print("Authentication failed.")
 
 if __name__ == "__main__":
-    client_id = input("Enter client ID: ")
-    client_secret = input("Enter client secret: ")
-    file_path = input("Enter file path: ")
-    test_id = input("Enter test ID: ")
-    test_exec_id = input("Enter test execution ID: ")
-    main(client_id, client_secret, file_path, test_id, test_exec_id)
+    main()
