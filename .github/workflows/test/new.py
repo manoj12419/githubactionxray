@@ -39,13 +39,9 @@ def main():
         "Content-Type": "application/xml",
     }
 
-    file = open(args.file_path, "rb")
-    response_import_execution = requests.post(uri_import_execution, headers=headers_import_execution, files={"file": file})
-    response_import_execution.raise_for_status()
-    print("Import successful.")
+    response_import_execution = requests.post(uri_import_execution, headers=headers_import_execution, files={"file": open(args.file_path, "rb")})
     print(response_import_execution.text)  # Print API response for debugging
-
-    file.close()
+    response_import_execution.raise_for_status()  # Keep this line to raise HTTPError if response status is not successful
 
 if __name__ == "__main__":
     main()
