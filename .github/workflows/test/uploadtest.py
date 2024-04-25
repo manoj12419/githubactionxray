@@ -25,11 +25,9 @@ def import_execution_junit(token, test_id, file_content):
     print("File content:")
     print(file_content)
 
-    response = requests.post(uri, headers, file_content)
+    requests.post(uri, headers, file_content)
     print("Import done.")
-    response.raise_for_status()
-    print("Import successful.")
-    print(response.text)  # Print API response for debugging
+    
 
 client_id, client_secret, file_content, test_id, test_exec_id = sys.argv[1:]
 
