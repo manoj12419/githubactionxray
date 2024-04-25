@@ -25,8 +25,9 @@ def upload_junit_results():
     body_authenticate = json.dumps({"client_id": args.client_id, "client_secret": args.client_secret})
    
     response_authenticate = requests.post(uri_authenticate, headers=headers_authenticate, data=body_authenticate)
-    print(f"Authorization: Bearer {response_authenticate}")
-    print(f"Authorization: Bearer {response_authenticate.text}")
+ 
+    print(f"MN 2 Authorization: Bearer {response_authenticate.text}")
+    print(f"MN 1 Authorization: Bearer {response_authenticate}")
     print(response_authenticate.text)
     token = response_authenticate.text  # Assuming the response is a plain string
     #uri_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
