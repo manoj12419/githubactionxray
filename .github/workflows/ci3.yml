@@ -56,14 +56,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests
 
-      - name: Run Python script
+      # - name: Run Python script
+      #   run: |
+      #     python ./.github/workflows/test/uploadtest.py \
+      #       "${{ secrets.XRAY_CLIENT_ID }}" \
+      #       "${{ secrets.XRAY_CLIENT_SECRET }}" \
+      #       "${{ github.workspace }}/cypress/results/junit/results.xml" \
+      #       "${{ inputs.testid }}" \
+      #       "${{ inputs.testexecutionid }}"
+
+      - name: Upload JUnit Results to Xray
         run: |
-          python ./.github/workflows/test/uploadtest.py \
-            "${{ secrets.XRAY_CLIENT_ID }}" \
-            "${{ secrets.XRAY_CLIENT_SECRET }}" \
-            "${{ github.workspace }}/cypress/results/junit/results.xml" \
-            "${{ inputs.testid }}" \
-            "${{ inputs.testexecutionid }}"
+          python new.py ${{ secrets.XRAY_CLIENT_ID }} ${{ secrets.XRAY_CLIENT_SECRET }} ${{ github.workspace }}/cypress/results/junit/results.xml ${{ inputs.testid }}
 
 
 
