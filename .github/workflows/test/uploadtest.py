@@ -27,9 +27,8 @@ def import_execution_junit(token, test_id, file_content):
 
     importResponse=requests.post(uri, headers, file_content)
     print("Import done.")
-    print(importResponse.text) 
+    print(importResponse) 
     
-
 client_id, client_secret, file_content, test_id, test_exec_id = sys.argv[1:]
 
 print(f"Testplan id: {test_id}")
