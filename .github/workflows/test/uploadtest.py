@@ -19,7 +19,6 @@ def import_execution_junit(token, test_id, file_content):
         "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
-
     print("Import request:")
     print(f"URI: {uri}")
     print(f"Headers: {headers}")
@@ -40,6 +39,7 @@ print(f"Received client_secret: {client_secret}")
 print(f"Received file content: {file_content}")
 
 token = authenticate(client_id, client_secret)
+print("token = authenticate(client_id, client_secret)")
 if token:
     import_execution_junit(token, test_id, file_content)
 else:
