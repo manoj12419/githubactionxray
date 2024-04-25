@@ -27,9 +27,12 @@ jobs:
         run: |
           ls -al ${{ github.workspace }}/cypress/results/junit/
       
-      - name: Merge report
-        run: |
-          npx junit-merge -d ${{ github.workspace }}/cypress/results/junit/ -o ${{ github.workspace }}/cypress/results/junit/results.xml
+      - name: Merge report and delete files except results.xml
+         run: |
+           npx junit-merge -d ${{ github.workspace }}/cypress/results/junit/ -o ${{ github.workspace }}/cypress/results/junit/results.xml
+           cd ${{ github.workspace }}/cypress/results/junit/
+           ls | grep -v "results.xml" | xargs rm -f
+
 
       - name: List files in .github/workflows/
         run: |
