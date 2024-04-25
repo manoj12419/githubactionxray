@@ -10,10 +10,11 @@ def authenticate(client_id, client_secret):
     try:
         response = requests.post(uri, headers=headers, data=body)
         response.raise_for_status()
-        return response.json().get("access_token")
+        return response.text  # Assuming the response is a plain string
     except requests.exceptions.RequestException as e:
         print(f"Error during authentication: {e}")
         return None
+
 
 def import_execution_junit(token, test_id, file_path):
     uri = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={test_id}"
