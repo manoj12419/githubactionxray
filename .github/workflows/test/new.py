@@ -9,20 +9,22 @@ def parse_args():
     parser.add_argument("test_id", help="Test ID or test plan key")
     return parser.parse_args()
 
+def authenticate_xray(client_id, client_secret):
+    auth_url = "https://xray.cloud.getxray.app/api/v1/authenticate"
+    auth_data = {
+        'client_id': client_id,
+        'client_secret': client_secret
+    }
+    auth_response = requests.post(auth_url, data=auth_data)
+    return auth_response
+
 def upload_junit_results(args):
     print(f"Test ID or test plan key: {args.test_id}")
     print(f"Client ID: {args.client_id}")
     print(f"Client secret: {args.client_secret}")
     print(f"File path: {args.file_path}")
 
-    # Step 1: Authenticate and get the token
-    auth_url = "https://xray.cloud.getxray.app/api/v1/authenticate"
-    auth_data = {
-        'client_id': args.client_id,
-        'client_secret': args.client_secret
-    }
-     
-    auth_response = requests.post(auth_url, data=auth_data)
+    auth_response = authenticate_xray(args.client_id, args.client_secret)
     print(auth_response.status_code)
     auth_token = auth_response.headers.get('Authorization')
     print("Auth Token:", auth_token)
@@ -32,11 +34,9 @@ def upload_junit_results(args):
     num_chars = len(auth_response.text)
     print('nO OF CHAR')
     print(num_chars)
-    # Step 2: Upload JUnit results using the obtained token
     import_url = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
     headers = {
-        "Authorization": auth_response.text,
-        #'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiI3MTc5OGI0YS1jNzdmLTM5NTctYjdhMC1kMjVlNmE3OWI0MDYiLCJhY2NvdW50SWQiOiI2M2I3NGI0NzZmMDY4ZWZlYzhmOGUxOWUiLCJpc1hlYSI6ZmFsc2UsImlhdCI6MTcxNDEwNzQ2NiwiZXhwIjoxNzE0MTkzODY2LCJhdWQiOiJDMkREQzAzRUI4MDE0ODVFOTNBOEExQkJGMjlBNjBGOCIsImlzcyI6ImNvbS54cGFuZGl0LnBsdWdpbnMueHJheSIsInN1YiI6IkMyRERDMDNFQjgwMTQ4NUU5M0E4QTFCQkYyOUE2MEY4In0.UhSo_VyBY3twwPlnH3UqSOmbaV3bpa5Zl5lnUzWHQUw',
+        "Authorization": bearertoken,
         "Content-Type": "application/xml",
     }
     print(headers)
