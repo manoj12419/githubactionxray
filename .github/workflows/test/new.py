@@ -21,10 +21,8 @@ def upload_junit_results(args):
         'client_id': args.client_id,
         'client_secret': args.client_secret
     }
-    authheader = {
-        "Content-Type": "application/xml"
-    }    
-    auth_response = requests.post(auth_url, headers=authheader, data=auth_data)
+     
+    auth_response = requests.post(auth_url, data=auth_data)
 
     print(f"Authorization token: {auth_response.text}")
     bearertoken=f"Bearer {auth_response.text}"
