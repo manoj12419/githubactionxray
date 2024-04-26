@@ -30,7 +30,8 @@ def upload_junit_results(args):
     bearertoken="Bearer "+auth_response.text
     print("My bearer token "+bearertoken)
     num_chars = len(auth_response.text)
-    print("Token Length "+num_chars)
+    print('nO OF CHAR')
+    print(num_chars)
     # Step 2: Upload JUnit results using the obtained token
     import_url = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
     headers = {
