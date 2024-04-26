@@ -1,6 +1,5 @@
 import argparse
 import requests
-import xmltodict
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
@@ -16,33 +15,27 @@ def upload_junit_results(args):
     print(f"Client secret: {args.client_secret}")
     print(f"File path: {args.file_path}")
 
-    url = "https://xray.cloud.getxray.app/api/v1/authenticate"
-    data = {
+    # Step 1: Authenticate and get the token
+    auth_url = "https://xray.cloud.getxray.app/api/v1/authenticate"
+    auth_data = {
         'client_id': args.client_id,
         'client_secret': args.client_secret,
         'grant_type': 'client_credentials'
     }
-    request = requests.post(url, data=data)
-   
-    print(f"Authorization token: {request.text}")
+    auth_response = requests.post(auth_url, data=auth_data)
+    token = auth_response.json()['access_token']
+    print(f"Authorization token: {token}")
 
-    header = {
-        "Authorization": f"Bearer {request.text}",
+    # Step 2: Upload JUnit results using the obtained token
+    import_url = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    headers = {
+        "Authorization": f"Bearer {token}",
         "Content-Type": "application/xml",
     }
-
-    url_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
-    print(url_import_execution)
     with open(args.file_path, 'rb') as file:
         xml_data = file.read()
-        print(request.text)
-        response = requests.post(url, headers=header, data=xml_data)
-        print(response)
+        response = requests.post(import_url, headers=headers, data=xml_data)
         print(response.text)
-    # with open(args.file_path, 'rb') as file:
-    #     xml_data = xmltodict.parse(file)
-    #     response_import_execution = requests.post(url_import_execution, headers=header, data=xml_data)
-    #     print(response_import_execution.text)
 
 if __name__ == "__main__":
     args = parse_args()
