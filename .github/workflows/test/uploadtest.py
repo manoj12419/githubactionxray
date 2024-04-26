@@ -32,8 +32,8 @@ def upload_junit_results(args):
         "Content-Type": "application/xml",
     }
 
-    with open(args.file_path, "r", encoding="utf-8-sig") as file:  # Use utf-8-sig to remove BOM
-        xml_content = file.read()
+    with open(args.file_path, "r", encoding="utf-8") as file:
+        xml_content = file.read().strip()  # Trim whitespace
 
     response_import_execution = requests.post(url_import_execution, headers=headers, data=xml_content)
 
