@@ -43,7 +43,7 @@ def upload_junit_results(args):
         }
     with open(args.file_path, 'rb') as file:
         xml_data = file.read()
-    print('file path')
+    print('file')
     print(xml_data)
     response2 = requests.request("POST", url, headers=headers, data=xml_data)
     
@@ -72,8 +72,8 @@ def upload_junit_results(args):
     print(headers)
     with open(args.file_path, 'rb') as file:
         xml_data = file.read()
-        response = requests.post(import_url, headers=headers, data=xml_data)
-        print(response.text)
+    response = requests.post(import_url, headers=headers, data=xml_data)
+    print(response.text)
 
 if __name__ == "__main__":
     args = parse_args()
