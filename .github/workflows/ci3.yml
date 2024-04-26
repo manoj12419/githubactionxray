@@ -1,4 +1,4 @@
-name: Xray Upload
+name: Powershell Xray Upload
  
 on:
   workflow_dispatch:
@@ -26,55 +26,26 @@ jobs:
       - name: List files in .github/workflows/
         run: |
           ls -al ${{ github.workspace }}/cypress/results/junit/
+      
+      - name: Merge report
+        run: |
+          npx junit-merge -d ${{ github.workspace }}/cypress/results/junit/ -o ${{ github.workspace }}/cypress/results/junit/results.xml
 
       - name: List files in .github/workflows/
         run: |
           ls -al ${{ github.workspace }}/cypress/results/junit/
 
-      
-      
-      - name: Merge report and delete files except results.xml
+      - name: Run PowerShell script
+        shell: pwsh
         run: |
-          npx junit-merge -d ${{ github.workspace }}/cypress/results/junit/ -o ${{ github.workspace }}/cypress/results/junit/results.xml
-          sed -i 's/^[ \t]*//' ${{ github.workspace }}/cypress/results/junit/results.xml
-          cd ${{ github.workspace }}/cypress/results/junit/
-          ls | grep -v "results.xml" | xargs rm -f
-
-
-      
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'  # Choose the appropriate Python version
-    
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests
-      
-      # - name: Run PowerShell script
-      #   shell: pwsh
-      #   run: |
-      #     ./.github/workflows/test/xray_upload.ps1 `
-      #     -client_id '${{secrets.XRAY_CLIENT_ID}}' `
-      #     -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
-      #     -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
-      #     -testId '${{ inputs.testid }}' `
-      #     -testExecId '${{ inputs.testexecutionid }}' `          
-
-
-      # - name: Run Python script
-      #   run: |
-      #     python ./.github/workflows/test/uploadtest.py \
-      #       "${{ secrets.XRAY_CLIENT_ID }}" \
-      #       "${{ secrets.XRAY_CLIENT_SECRET }}" \
-      #       "${{ github.workspace }}/cypress/results/junit/results.xml" \
-      #       "${{ inputs.testid }}" \
-      #       "${{ inputs.testexecutionid }}"
-
-      - name: Upload JUnit Results to Xray
-        run: |
-          python ./.github/workflows/test/new.py ${{ secrets.XRAY_CLIENT_ID }} ${{ secrets.XRAY_CLIENT_SECRET }} ${{ github.workspace }}/cypress/results/junit/results.xml ${{ inputs.testid }}
+          ./.github/workflows/test/xray_upload.ps1 `
+          -client_id '${{secrets.XRAY_CLIENT_ID}}' `
+          -client_secret '${{secrets.XRAY_CLIENT_SECRET}}' `
+          -filePath "${{ github.workspace }}/cypress/results/junit/results.xml" `
+          -testId '${{ inputs.testid }}' `
+          -testExecId '${{ inputs.testexecutionid }}' `
+          
+          
 
 
 
