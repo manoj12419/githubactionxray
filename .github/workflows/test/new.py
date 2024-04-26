@@ -34,6 +34,20 @@ def upload_junit_results(args):
 
     print(response1.text)
 
+    url = "https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK"
+
+   
+    headers = {
+     'Authorization': 'Bearer '+response1.text,
+     'Content-Type': 'application/xml'
+        }
+    with open(args.file_path, 'rb') as file:
+        xml_data = file.read()
+    print('file path '+xml_data)
+    response2 = requests.request("POST", url, headers=headers, data=xml_data)
+    
+    print(response2.text)
+
     print(f"Test ID or test plan key: {args.test_id}")
     print(f"Client ID: {args.client_id}")
     print(f"Client secret: {args.client_secret}")
