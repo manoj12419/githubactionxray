@@ -32,6 +32,7 @@ def upload_junit_results(args):
         "Authorization": f"Bearer {auth_response.text}",
         "Content-Type": "application/xml",
     }
+    print(headers)
     with open(args.file_path, 'rb') as file:
         xml_data = file.read()
         response = requests.post(import_url, headers=headers, data=xml_data)
