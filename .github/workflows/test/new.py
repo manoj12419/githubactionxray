@@ -1,5 +1,6 @@
 import argparse
 import requests
+import json
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
