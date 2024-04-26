@@ -32,10 +32,12 @@ def upload_junit_results(args):
         "Content-Type": "application/xml",
     }
 
-    with open(args.file_path) as file:
-        uploadresponse=requests.post(url_import_execution, headers=headers, data=file)
+    with open(args.file_path, "r", encoding="utf-8-sig") as file:  # Use utf-8-sig to remove BOM
+        xml_content = file.read()
 
-    print(uploadresponse.text)
+    response_import_execution = requests.post(url_import_execution, headers=headers, data=xml_content)
+
+    print(response_import_execution.text)
 
 if __name__ == "__main__":
     args = parse_args()
