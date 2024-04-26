@@ -1,5 +1,7 @@
 import argparse
 import requests
+import xmltodict
+import json
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
@@ -15,28 +17,29 @@ def upload_junit_results(args):
     print(f"Client secret: {args.client_secret}")
     print(f"File path: {args.file_path}")
 
-    # Read the XML file and remove the Unicode character \ufeff
-    with open(args.file_path, 'r', encoding='utf-8') as file:
-        xml_data = file.read().replace("\ufeff", "")
-
-    url = "https://xray.cloud.getxray.app/api/v1/authenticate"
+    url_authenticate = "https://xray.cloud.getxray.app/api/v1/authenticate"
     data = {
         'client_id': args.client_id,
         'client_secret': args.client_secret,
         'grant_type': 'client_credentials'
     }
-    response_authenticate = requests.post(url, data=data)
-    print(response_authenticate)
-    print(response_authenticate.text)
-    
-    header = {
+    response_authenticate = requests.post(url_authenticate, data=data)
+
+    #access_token = json.loads(response_authenticate.text)['access_token']
+    print(f"Access token: {response_authenticate.text}")
+
+    url_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    headers = {
         "Authorization": f"Bearer {response_authenticate.text}",
         "Content-Type": "application/xml",
     }
 
-    url2 = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
-    request2 = requests.post(url2, headers=header, data=xml_data.encode('utf-8'))
-    print(request2.text)
+    with open(args.file_path, "r") as file:
+        xml_content = file.read()
+        json_content = json.dumps(xmltodict.parse(xml_content))
+        response_import_execution = requests.post(url_import_execution, headers=headers, data=json_content)
+
+    print(response_import_execution.text)
 
 if __name__ == "__main__":
     args = parse_args()
