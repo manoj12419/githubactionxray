@@ -43,7 +43,8 @@ def upload_junit_results(args):
         }
     with open(args.file_path, 'rb') as file:
         xml_data = file.read()
-    print('file path '+xml_data)
+    print('file path')
+    print(xml_data)
     response2 = requests.request("POST", url, headers=headers, data=xml_data)
     
     print(response2.text)
