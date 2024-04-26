@@ -25,7 +25,7 @@ def upload_junit_results(args):
     auth_response = requests.post(auth_url, data=auth_data)
 
     print(f"Authorization token: {auth_response.text}")
-    bearertoken=f"Bearer {auth_response.text}"
+    bearertoken="Bearer "+auth_response.text
 
     # Step 2: Upload JUnit results using the obtained token
     import_url = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
