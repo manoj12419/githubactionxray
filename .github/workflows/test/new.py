@@ -19,10 +19,12 @@ def upload_junit_results(args):
     auth_url = "https://xray.cloud.getxray.app/api/v1/authenticate"
     auth_data = {
         'client_id': args.client_id,
-        'client_secret': args.client_secret,
-        'grant_type': 'client_credentials'
+        'client_secret': args.client_secret
     }
-    auth_response = requests.post(auth_url, data=auth_data)
+    authheader = {
+        "Content-Type": "application/xml"
+    }    
+    auth_response = requests.post(auth_url, headers=authheader, data=auth_data)
 
     print(f"Authorization token: {auth_response.text}")
     bearertoken=f"Bearer {auth_response.text}"
