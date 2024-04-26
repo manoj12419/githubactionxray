@@ -23,7 +23,9 @@ def upload_junit_results(args):
     }
      
     auth_response = requests.post(auth_url, data=auth_data)
-
+    print(auth_response.status_code)
+    auth_token = auth_response.headers.get('Authorization')
+    print("Auth Token:", auth_token)
     print(f"Authorization token: {auth_response.text}")
     bearertoken="Bearer "+auth_response.text
 
