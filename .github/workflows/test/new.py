@@ -1,6 +1,5 @@
 import argparse
 import requests
-import json
 import xmltodict
 
 def parse_args():
@@ -33,10 +32,16 @@ def upload_junit_results(args):
     }
 
     url_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    print(url_import_execution)
     with open(args.file_path, 'rb') as file:
-        xml_data = xmltodict.parse(file)
-        response_import_execution = requests.post(url_import_execution, headers=header, data=xml_data)
-        print(response_import_execution.text)
+        xml_data = file.read()
+        response = requests.post(url, headers=header, data=xml_data)
+        print(response)
+        print(response.text)
+    # with open(args.file_path, 'rb') as file:
+    #     xml_data = xmltodict.parse(file)
+    #     response_import_execution = requests.post(url_import_execution, headers=header, data=xml_data)
+    #     print(response_import_execution.text)
 
 if __name__ == "__main__":
     args = parse_args()
