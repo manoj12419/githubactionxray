@@ -35,7 +35,7 @@ def upload_junit_results(args):
     # Step 2: Upload JUnit results using the obtained token
     import_url = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
     headers = {
-        "Authorization": bearertoken,
+        "Authorization": auth_response.text,
         #'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5hbnQiOiI3MTc5OGI0YS1jNzdmLTM5NTctYjdhMC1kMjVlNmE3OWI0MDYiLCJhY2NvdW50SWQiOiI2M2I3NGI0NzZmMDY4ZWZlYzhmOGUxOWUiLCJpc1hlYSI6ZmFsc2UsImlhdCI6MTcxNDEwNzQ2NiwiZXhwIjoxNzE0MTkzODY2LCJhdWQiOiJDMkREQzAzRUI4MDE0ODVFOTNBOEExQkJGMjlBNjBGOCIsImlzcyI6ImNvbS54cGFuZGl0LnBsdWdpbnMueHJheSIsInN1YiI6IkMyRERDMDNFQjgwMTQ4NUU5M0E4QTFCQkYyOUE2MEY4In0.UhSo_VyBY3twwPlnH3UqSOmbaV3bpa5Zl5lnUzWHQUw',
         "Content-Type": "application/xml",
     }
