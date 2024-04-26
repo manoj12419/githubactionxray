@@ -1,7 +1,5 @@
 import argparse
 import requests
-import xmltodict
-import json
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
@@ -10,10 +8,6 @@ def parse_args():
     parser.add_argument("file_path", help="Path to the JUnit results XML file")
     parser.add_argument("test_id", help="Test ID or test plan key")
     return parser.parse_args()
-
-def clean_xml_content(xml_content):
-    cleaned_content = xml_content.lstrip("\ufeff")
-    return cleaned_content
 
 def upload_junit_results(args):
     print(f"Test ID or test plan key: {args.test_id}")
@@ -29,7 +23,7 @@ def upload_junit_results(args):
     }
     response_authenticate = requests.post(url_authenticate, data=data)
 
-    access_token = json.loads(response_authenticate.text)['access_token']
+    access_token = response_authenticate.json()['access_token']
     print(f"Access token: {access_token}")
 
     url_import_execution = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
@@ -38,13 +32,10 @@ def upload_junit_results(args):
         "Content-Type": "application/xml",
     }
 
-    with open(args.file_path, "r") as file:
-        xml_content = file.read()
-        cleaned_content = clean_xml_content(xml_content)
-        json_content = json.dumps(xmltodict.parse(cleaned_content))
-        response_import_execution = requests.post(url_import_execution, headers=headers, data=json_content)
+    with open(args.file_path) as file:
+        uploadresponse=requests.post(url_import_execution, headers=headers, data=file)
 
-    print(response_import_execution.text)
+    print(uploadresponse.text)
 
 if __name__ == "__main__":
     args = parse_args()
