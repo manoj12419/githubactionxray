@@ -39,11 +39,11 @@ jobs:
         with:
           python-version: '3.x'  # Choose the appropriate Python version
     
-      # - name: Install dependencies
-      #   run: |
-      #     python -m pip install --upgrade pip
-      #     pip install requests
-      #     pip install xmltodict  # Add this line to install xmltodict
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          pip install xmltodict  # Add this line to install xmltodict
 
       - name: Upload JUnit Results to Xray
         run: |
