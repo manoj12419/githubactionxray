@@ -24,11 +24,11 @@ def upload_junit_results(args):
         'grant_type': 'client_credentials'
     }
     request = requests.post(url, data=data)
-    token = request.json()['access_token']
-    print(f"Authorization token: {token}")
+   
+    print(f"Authorization token: {request.text}")
 
     header = {
-        "Authorization": f"Bearer {token}",
+        "Authorization": f"Bearer {request.text}",
         "Content-Type": "application/xml",
     }
 
