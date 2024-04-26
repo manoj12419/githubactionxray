@@ -19,6 +19,20 @@ def authenticate_xray(client_id, client_secret):
     return auth_response
 
 def upload_junit_results(args):
+    url = "https://xray.cloud.getxray.app/api/v1/authenticate"
+
+    payload = json.dumps({
+        "client_id": "C2DDC03EB801485E93A8A1BBF29A60F8",
+        "client_secret": "f25bc582a1c9a41875413da9a083f5ff082bb241f446780cc705636dbb5feb8c"
+            })
+    headers = {
+         'Content-Type': 'application/json'
+        }
+
+    response1 = requests.request("POST", url, headers=headers, data=payload)
+
+    print(response1.text)
+
     print(f"Test ID or test plan key: {args.test_id}")
     print(f"Client ID: {args.client_id}")
     print(f"Client secret: {args.client_secret}")
@@ -29,7 +43,7 @@ def upload_junit_results(args):
     auth_token = auth_response.headers.get('Authorization')
     print("Auth Token:", auth_token)
     print(f"Authorization token: {auth_response.text}")
-    bearertoken="Bearer "+auth_response.text
+    bearertoken="Bearer "+response1.text
     print("My bearer token "+bearertoken)
     num_chars = len(auth_response.text)
     print('nO OF CHAR')
