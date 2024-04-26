@@ -1,46 +1,43 @@
-import sys
+import argparse
 import requests
-import json
 
-def authenticate(client_id, client_secret):
-    uri = "https://xray.cloud.getxray.app/api/v1/authenticate"
-    headers = {"Content-Type": "application/json"}
-    body = json.dumps({"client_id": client_id, "client_secret": client_secret})
+def parse_args():
+    parser = argparse.ArgumentParser(description="Upload JUnit results to Xray.")
+    parser.add_argument("client_id", help="Xray client ID")
+    parser.add_argument("client_secret", help="Xray client secret")
+    parser.add_argument("file_path", help="Path to the JUnit results XML file")
+    parser.add_argument("test_id", help="Test ID or test plan key")
+    return parser.parse_args()
 
-    response = requests.post(uri, headers=headers, data=body)
-    response.raise_for_status()
-    print("Authentication response:")
-    print(response.text)    
-    return response.text
+def upload_junit_results(args):
+    print(f"Test ID or test plan key: {args.test_id}")
+    print(f"Client ID: {args.client_id}")
+    print(f"Client secret: {args.client_secret}")
+    print(f"File path: {args.file_path}")
 
-def import_execution_junit(token, test_id, file_path):
-    print(f"Authorization: Bearer {token}")
-    uri = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={test_id}"
-    headers = {
-        "Authorization": f"Bearer {token}",
+    # Read the XML file and remove the Unicode character \ufeff
+    with open(args.file_path, 'r', encoding='utf-8') as file:
+        xml_data = file.read().replace("\ufeff", "")
+
+    url = "https://xray.cloud.getxray.app/api/v1/authenticate"
+    data = {
+        'client_id': args.client_id,
+        'client_secret': args.client_secret,
+        'grant_type': 'client_credentials'
+    }
+    response_authenticate = requests.post(url, data=data)
+    print(response_authenticate)
+    print(response_authenticate.text)
+    
+    header = {
+        "Authorization": f"Bearer {response_authenticate.text}",
         "Content-Type": "application/xml",
     }
-  
-    with open(file_path, 'rb') as file:
-        data = file.read()    
-    response = requests.post(uri, headers=headers, data=data)
-    print("Import response:")
-    print(response.text)
-    print("Status code:", response.status_code)
+
+    url2 = f"https://xray.cloud.getxray.app/api/v1/import/execution/junit?projectKey=YAK&testPlanKey={args.test_id}"
+    request2 = requests.post(url2, headers=header, data=xml_data.encode('utf-8'))
+    print(request2.text)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 6:
-        print("Usage: python script.py <client_id> <client_secret> <file_path> <test_id> <test_exec_id>")
-        sys.exit(1)
-
-    client_id, client_secret, file_path, test_id, test_exec_id = sys.argv[1:]
-
-    print(f"Test plan id: {test_id}")
-    print(f"Test exec id: {test_exec_id}")
-    print(f"Received client_id: {client_id}")
-    print(f"Received client_secret: {client_secret}")
-    print(f"Received file path: {file_path}")
-
-    token = authenticate(client_id, client_secret)
-    print(f"Authorization: Bearer {token}")
-    import_execution_junit(token, test_id, file_path)
+    args = parse_args()
+    upload_junit_results(args)
